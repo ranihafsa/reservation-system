@@ -23,6 +23,14 @@ typedef struct {
     char equipements[200];
 } Salle;
 
+typedef struct {
+    int id;
+    char nom[50];
+    char email[50];
+    char téléphone[20];
+    int nombre_reservations;  
+} Client;
+
 
 int Disponibilite(char *nomSalle, char *date, int hDebut, int hFin, Reservation reservations[], int nb_salles) {
     for(int i = 0; i < nb_salles; i++) {
@@ -207,6 +215,20 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations, salle sal
         }
     }
 }
+
+float prixAvecFidelite(Client c, float prix_base) {
+    float reduction = 0.0f;
+
+    if (c.total_reservations > 10) {
+        reduction = 0.20f;  // 20 %
+    } 
+    else if (c.total_reservations > 5) {
+        reduction = 0.10f;  // 10 %
+    }
+    float prix_final = prix_base * (1.0f - reduction);
+    return prix_final;
+}
+
 
 
 

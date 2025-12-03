@@ -28,7 +28,8 @@ typedef struct {
     char nom[50];
     char email[50];
     char téléphone[20];
-    int nombre_reservations;  
+    int nombre_reservations;
+    struct Client *suivant;
 } Client;
 
 
@@ -228,6 +229,46 @@ float prixAvecFidelite(Client c, float prix_base) {
     float prix_final = prix_base * (1.0f - reduction);
     return prix_final;
 }
+
+void ajouterClientSiInexistant(Client **tete) {
+    char nom[50], email[50];
+    printf("Nom du client : ");
+    scanf("%s", nom);
+    printf("Email du client : ");
+    scanf("%s", email);
+    Client *courant = *tete;
+
+    while (courant != NULL) {
+        if (strcmp(courant->nom, nom) == 0 && strcmp(courant->email, email) == 0) {
+            printf(" Le client existe déjà (ID = %d)\n", courant->id);
+            return;
+        }
+        courant = courant->suivant
+    }
+    Client *nouveau = (Client *)malloc(sizeof(Client));
+    if (!nouveau) {
+        printf(" Erreur : allocation impossible.\n");
+        return;
+    }
+    nouveau->id = (*tete == NULL) ? 1 : (*tete)->id + 1; // simple ID, ou mieux parcourir pour trouver le dernier
+    strcpy(nouveau->nom, nom);
+    strcpy(nouveau->email, email);
+    nouveau->total_reservations = 0;
+    nouveau->total_depense = 0.0f;
+    nouveau->suivant = NULL;
+
+    if (*tete == NULL) {
+        *tete = nouveau;
+    } else {
+        courant = *tete;
+        while (courant->suivant != NULL)
+            courant = courant->suivant;
+        courant->suivant = nouveau;
+    }
+
+    printf("Client ajouté avec succès (ID = %d)\n", nouveau->id);
+}
+            
 
 
 

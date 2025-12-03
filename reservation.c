@@ -160,12 +160,6 @@ void chiffredaffairesparsalle(Reservation reservations[],int nb_reservations){
                 exist = j;
                 break;
             }
-        }
-        if(exist == -1){
-            strcpy(salles[nb_salles_reserv], reservations[i].salle);
-            exist = nb_salles_reserv;
-            nb_salles_reserv++;
-        }
         ca[exist]+=reservations[i].tarif;
     }
     for(int i = 0; i < nb_salles_reserv; i++) {
@@ -213,6 +207,7 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations, salle sal
         }
     }
 }
+
 
 
 

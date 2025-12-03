@@ -28,21 +28,21 @@ int Disponibilite(char *nomSalle, char *date, int hDebut, int hFin, Reservation 
     for(int i = 0; i < n; i++) {
         if(strcmp(reservations[i].salle, nomSalle) == 0 && strcmp(reservations[i].date, date) == 0) {
 
-            if(hDebut < reservations[i].heure_fin && reservations[i].heure_debut < hFin) {
-                return 0; 
+            if(hDebut < reservations[i].heure_fin || reservations[i].heure_debut < hFin) {
+                return 1; 
             }
         }
     }
-    return 1; 
+    return 0; 
 }
 
 int verifCapacite(int nombre_personnes, Salle salles[], int nb_salles, char *nomSalle) {
     for(int i = 0; i < nb_salles; i++) {
         if(strcmp(salles[i].nom, nomSalle) == 0) {
             if(nombre_personnes <= salles[i].capacite) {
-                return 1; 
-            } else {
                 return 0; 
+            } else {
+                return 1; 
             }
         }
     }
@@ -52,13 +52,13 @@ int verifCapacite(int nombre_personnes, Salle salles[], int nb_salles, char *nom
 int creerReservation(Reservation r, Reservation reservations[], int *nb_res, Salle salles[], int nb_salles) {
 
     if(!verifCapacite(r.nombre_personnes, salles, nb_salles, r.salle)) {
-        printf("Erreur : Capacité insuffisante pour la salle %s\n", r.salle);
-        return 0;
+        printf("Erreur : Salle insuffisante pour la capacité %s\n", r.salle);
+        return 1;
     }
 
     if(!Disponibilite(r.salle, r.date, r.heure_debut, r.heure_fin, reservations, *nb_res)) {
-        printf("Erreur : La salle %s est déjà réservée à cette horaire\n", r.salle);
-        return 0;
+        printf("Erreur : La salle %s est déjà réservée à cet horaire\n", r.salle);
+        return 1;
     }
 
     float tarif_horaire = 0;
@@ -74,7 +74,7 @@ int creerReservation(Reservation r, Reservation reservations[], int *nb_res, Sal
     (*nb_res)++;
 
     printf("Réservation créée avec succès ! Tarif = %.2f DT\n", r.tarif);
-    return 1;
+    return 0;
     }
 
 
@@ -198,4 +198,5 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations) {
         }
     }
 }
+
 

@@ -145,24 +145,24 @@ void genererFacture(Reservation r, int id) {
     fclose(f);
 }
 
-void chiffredaffairesparsalle(Reservation reservations[],int nb_reservations){
+void chiffredaffairesparsalle(Reservation reservations[],int nb_reservations, int nb_salles){
     printf("Chiffre d'affaire par salle");
     
     float ca[10]={0};    //tableau des chiffres daffaires
-    char salles[10][50];  //les noms de salles ayant une reservation
-    int nb_salles_reserv =0; //nbre de salles ayant une reservation
 
     for(int i = 0; i < nb_reservations; i++){
         int exist = -1;
 
-        for(int j = 0; j < nb_salles_reserv; j++) {
+        for(int j = 0; j < nb_salles; j++) {
             if(strcmp(salles[j], reservations[i].salle) == 0) {
                 exist = j;
                 break;
             }
-        ca[exist]+=reservations[i].tarif;
+        if(!exist = -1){
+           ca[exist]+=reservations[i].tarif;
+        }
     }
-    for(int i = 0; i < nb_salles_reserv; i++) {
+    for(int i = 0; i < nb_salles; i++) {
         printf("Salle %s : %.2f DT\n", salles[i], ca[i]);
     }
 }
@@ -207,6 +207,7 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations, salle sal
         }
     }
 }
+
 
 
 

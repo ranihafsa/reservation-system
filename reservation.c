@@ -24,8 +24,8 @@ typedef struct {
 } Salle;
 
 
-int Disponibilite(char *nomSalle, char *date, int hDebut, int hFin, Reservation reservations[], int n) {
-    for(int i = 0; i < n; i++) {
+int Disponibilite(char *nomSalle, char *date, int hDebut, int hFin, Reservation reservations[], int nb_salles) {
+    for(int i = 0; i < nb_salles; i++) {
         if(strcmp(reservations[i].salle, nomSalle) == 0 && strcmp(reservations[i].date, date) == 0) {
 
             if(hDebut < reservations[i].heure_fin || reservations[i].heure_debut < hFin) {
@@ -177,23 +177,18 @@ void reservationsParMois(Reservation reservations[], int nb_reservations) {
 
     for(int i = 0; i < nb_reservations; i++) {
         int mois;
-        // Extraire le mois à partir de la date
-        // format date = "YYYY-MM-DD"
         sscanf(reservations[i].date, "%*d-%d-%*d", &mois);
-        // mois est 1 à 12, on soustrait 1 pour l'indice 0 à 11
         mois_count[mois - 1]++;
     }
 
-    // Affichage
     printf("\n=== Nombre de réservations par mois ===\n");
     for(int i = 0; i < 12; i++) {
         printf("Mois %02d : %d réservation(s)\n", i + 1, mois_count[i]);
     }
 }
-void sallesPopulaires(Reservation reservations[], int nb_reservations) {
-    char salles[10][50];     // noms des salles uniques
-    int nb_salles = 0;       // nombre de salles différentes
-    int compte[10] = {0};    // compteur de réservations par salle
+void sallesPopulaires(Reservation reservations[], int nb_reservations, salle salles[] , int nb_salles) {
+
+    int compte[10] = {0};
 
     for(int i = 0; i < nb_reservations; i++) {
         int index = -1;
@@ -203,12 +198,6 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations) {
                 break;
             }
         }
-
-        if(index == -1) {
-            strcpy(salles[nb_salles], reservations[i].salle);
-            index = nb_salles;
-            nb_salles++;
-        }
         compte[index]++;
     }
  int max_res = 0;
@@ -217,7 +206,6 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations) {
             max_res = compte[i];
         }
     }
-    //on affiche la plus populaires ON PEUT MODIFIER POUR LES 3 PLUS POPULAIRES (A REVOIR)   
     printf("\n=== Salle(s) la/les plus populaire(s) ===\n");
     for(int i = 0; i < nb_salles; i++) {
         if(compte[i] == max_res) {

@@ -145,6 +145,33 @@ void genererFacture(Reservation r, int id) {
     fclose(f);
 }
 
+void chiffredaffairesparsalle(Reservation reservations[],int nb_reservations){
+    printf("Chiffre d'affaire par salle");
+    
+    float ca[10]={0};    //tableau des chiffres daffaires
+    char salles[10][50];  //les noms de salles ayant une reservation
+    int nb_salles_reserv =0; //nbre de salles ayant une reservation
+
+    for(int i = 0; i < nb_reservations; i++){
+        int exist = -1;
+
+        for(int j = 0; j < nb_salles_reserv; j++) {
+            if(strcmp(salles[j], reservations[i].salle) == 0) {
+                exist = j;
+                break;
+            }
+        }
+        if(exist == -1){
+            strcpy(salles[nb_salles_reserv], reservations[i].salle);
+            exist = nb_salles_reserv;
+            nb_salles_reserv++;
+        }
+        ca[exist]+=reservations[i].tarif;
+    }
+    for(int i = 0; i < nb_salles_reserv; i++) {
+        printf("Salle %s : %.2f DT\n", salles[i], ca[i]);
+    }
+}
 void reservationsParMois(Reservation reservations[], int nb_reservations) {
     int mois_count[12] = {0};  // compteur pour chaque mois (0 = janvier, 11 = décembre)
 
@@ -198,6 +225,7 @@ void sallesPopulaires(Reservation reservations[], int nb_reservations) {
         }
     }
 }
+
 
 
 
